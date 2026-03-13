@@ -1,0 +1,2 @@
+"""SafeIncident backend package."""
+
