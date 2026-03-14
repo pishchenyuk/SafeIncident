@@ -1,9 +1,0 @@
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: safeincident-app
-    ports:
-      - "8000:8000"
-

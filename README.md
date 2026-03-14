@@ -1,6 +1,6 @@
 # SafeIncident
 
-Простое веб-приложение для регистрации и управления инцидентами на FastAPI, SQLAlchemy, SQLite, Jinja2 и Bootstrap.
+Простое веб-приложение для регистрации и управления инцидентами на FastAPI, SQLAlchemy, Jinja2 и Bootstrap.
 
 ## Возможности
 
@@ -33,10 +33,12 @@ static/
     style.css
 
 requirements.txt
+Dockerfile
+docker-compose.yaml
 README.md
 ```
 
-## Локальный запуск
+## Локальный запуск (SQLite по умолчанию)
 
 1. Создайте и активируйте виртуальное окружение:
 
@@ -63,19 +65,18 @@ uvicorn backend.main:app --reload
 http://localhost:8000
 ```
 
-## Примечания
-
-- Файл базы данных (`safeincident.db`) создается автоматически при первом запуске.
-- Архитектура намеренно модульная для упрощения будущих расширений (CI/CD, Docker, тесты, миграции).
-
-## Запуск через Docker Compose
+## Запуск через Docker Compose (PostgreSQL)
 
 ```powershell
 docker compose up --build
 ```
 
-Приложение будет доступно по адресу:
+Приложение: `http://localhost:8000`  
+PostgreSQL: `localhost:5432` (`safeincident/safeincident`, БД `safeincident`)
 
-```text
-http://localhost:8000
-```
+## Примечания
+
+- Конфигурация БД задается через `DATABASE_URL`.
+- Если `DATABASE_URL` не указан, используется SQLite: `sqlite:///./safeincident.db`.
+- В Docker Compose приложение использует PostgreSQL.
+
