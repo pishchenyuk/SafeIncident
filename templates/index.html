@@ -66,7 +66,7 @@
                 </thead>
                 <tbody>
                 {% for incident in incidents %}
-                    <tr>
+                    <tr class="{% if incident.status.value in ['NEW', 'IN_PROGRESS'] %}table-warning{% endif %}">
                         <td>{{ incident.id }}</td>
                         <td>{{ incident.title }}</td>
                         <td>{{ incident.location }}</td>
@@ -89,5 +89,8 @@
             </table>
         </div>
     </div>
+</div>
+<div class="small text-muted mt-2">
+    Подсветка строк: активные инциденты (НОВЫЙ, В РАБОТЕ).
 </div>
 {% endblock %}
