@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form, HTTPException, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -23,8 +23,20 @@ STATUS_BADGE_CLASSES = {
 
 
 @router.get("/", response_class=HTMLResponse)
-def index(request: Request, db: Session = Depends(get_db)):
+def index(
+    request: Request,
+    q: str = Query(default=""),
+    db: Session = Depends(get_db),
+):
     incidents = crud.get_incidents(db)
+    search_query = q.strip()
+    if search_query:
+        query_lower = search_query.lower()
+        incidents = [
+            incident
+            for incident in incidents
+            if query_lower in incident.title.lower() or query_lower in incident.location.lower()
+        ]
     total_count = len(incidents)
     active_count = sum(
         1 for incident in incidents if incident.status in (models.IncidentStatus.NEW, models.IncidentStatus.IN_PROGRESS)
@@ -38,6 +50,7 @@ def index(request: Request, db: Session = Depends(get_db)):
             "status_badge_classes": STATUS_BADGE_CLASSES,
             "total_count": total_count,
             "active_count": active_count,
+            "search_query": search_query,
         },
     )
 
