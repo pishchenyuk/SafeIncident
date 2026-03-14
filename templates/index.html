@@ -50,6 +50,28 @@
     </div>
 </div>
 
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h6 mb-0">Сводка по статусам</h2>
+            <span class="small text-muted">Решено: {{ resolved_percent }}%</span>
+        </div>
+        <div class="progress mb-3" role="progressbar" aria-label="Процент решенных инцидентов" aria-valuenow="{{ resolved_percent }}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-success" style="width: {{ resolved_percent }}%">{{ resolved_percent }}%</div>
+        </div>
+        <div class="row g-2">
+            {% for option in status_options %}
+                <div class="col-6 col-md-3">
+                    <div class="border rounded p-2 h-100">
+                        <div><span class="badge {{ status_badge_classes[option] }}">{{ status_labels[option] }}</span></div>
+                        <div class="h4 mt-2 mb-0">{{ status_counts[option] }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">

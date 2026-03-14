@@ -51,6 +51,12 @@ def index(
     active_count = sum(
         1 for incident in incidents if incident.status in (models.IncidentStatus.NEW, models.IncidentStatus.IN_PROGRESS)
     )
+    status_counts = {status_option: 0 for status_option in models.IncidentStatus}
+    for incident in incidents:
+        status_counts[incident.status] += 1
+    resolved_count = status_counts[models.IncidentStatus.RESOLVED]
+    resolved_percent = int((resolved_count / total_count) * 100) if total_count else 0
+
     return templates.TemplateResponse(
         "index.html",
         {
@@ -63,6 +69,8 @@ def index(
             "search_query": search_query,
             "selected_status": selected_status,
             "status_options": list(models.IncidentStatus),
+            "status_counts": status_counts,
+            "resolved_percent": resolved_percent,
         },
     )
 

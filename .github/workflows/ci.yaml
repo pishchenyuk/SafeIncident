@@ -98,6 +98,26 @@ jobs:
           source venv/bin/activate
           mypy --ignore-missing-imports backend || true
 
+      - name: Run Pytest Tests
+        run: |
+          source venv/bin/activate
+          echo "Running pytest tests..."
+          pytest tests/ -v --tb=short
+
+      - name: Run Pytest with Coverage
+        run: |
+          source venv/bin/activate
+          echo "Running pytest with coverage..."
+          pytest tests/ --cov=backend --cov-report=term-missing --cov-report=xml
+          echo "Coverage report:"
+          coverage report
+
+      - name: Check Test Coverage
+        run: |
+          source venv/bin/activate
+          echo "Checking test coverage (target: 40%)..."
+          pytest tests/ --cov=backend --cov-report=term --cov-fail-under=40
+
       - name: Stop existing containers (if any)
         run: |
           docker compose down || true
