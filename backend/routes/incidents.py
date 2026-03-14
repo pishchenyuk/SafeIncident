@@ -26,10 +26,20 @@ STATUS_BADGE_CLASSES = {
 def index(
     request: Request,
     q: str = Query(default=""),
+    status: str = Query(default=""),
     db: Session = Depends(get_db),
 ):
     incidents = crud.get_incidents(db)
     search_query = q.strip()
+    selected_status = status.strip()
+
+    if selected_status:
+        try:
+            status_enum = models.IncidentStatus(selected_status)
+            incidents = [incident for incident in incidents if incident.status == status_enum]
+        except ValueError:
+            selected_status = ""
+
     if search_query:
         query_lower = search_query.lower()
         incidents = [
@@ -51,6 +61,8 @@ def index(
             "total_count": total_count,
             "active_count": active_count,
             "search_query": search_query,
+            "selected_status": selected_status,
+            "status_options": list(models.IncidentStatus),
         },
     )
 
