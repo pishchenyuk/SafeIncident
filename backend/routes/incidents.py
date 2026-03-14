@@ -14,6 +14,12 @@ STATUS_LABELS = {
     models.IncidentStatus.RESOLVED: "РЕШЕН",
     models.IncidentStatus.CANCELLED: "ОТМЕНЕН",
 }
+STATUS_BADGE_CLASSES = {
+    models.IncidentStatus.NEW: "text-bg-secondary",
+    models.IncidentStatus.IN_PROGRESS: "text-bg-warning",
+    models.IncidentStatus.RESOLVED: "text-bg-success",
+    models.IncidentStatus.CANCELLED: "text-bg-danger",
+}
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -21,7 +27,12 @@ def index(request: Request, db: Session = Depends(get_db)):
     incidents = crud.get_incidents(db)
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "incidents": incidents, "status_labels": STATUS_LABELS},
+        {
+            "request": request,
+            "incidents": incidents,
+            "status_labels": STATUS_LABELS,
+            "status_badge_classes": STATUS_BADGE_CLASSES,
+        },
     )
 
 
@@ -58,6 +69,7 @@ def incident_detail(incident_id: int, request: Request, db: Session = Depends(ge
             "incident": incident,
             "statuses": list(models.IncidentStatus),
             "status_labels": STATUS_LABELS,
+            "status_badge_classes": STATUS_BADGE_CLASSES,
         },
     )
 
