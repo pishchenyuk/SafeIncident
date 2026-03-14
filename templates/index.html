@@ -7,6 +7,20 @@
     <a href="/incidents/create" class="btn btn-primary">Создать инцидент</a>
 </div>
 
+<form method="get" action="/" class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col-md-9">
+                <input type="text" name="q" class="form-control" placeholder="Поиск по названию или локации" value="{{ search_query }}">
+            </div>
+            <div class="col-md-3 d-grid d-md-flex gap-2">
+                <button type="submit" class="btn btn-outline-primary w-100">Поиск</button>
+                <a href="/" class="btn btn-outline-secondary w-100">Сброс</a>
+            </div>
+        </div>
+    </div>
+</form>
+
 <div class="row g-3 mb-3">
     <div class="col-md-6">
         <div class="card shadow-sm">
