@@ -30,4 +30,3 @@ def update_incident_status(db: Session, incident: models.Incident, status: model
     db.commit()
     db.refresh(incident)
     return incident
-

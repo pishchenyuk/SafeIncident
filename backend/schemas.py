@@ -21,4 +21,3 @@ class IncidentRead(IncidentBase):
     id: int
     status: IncidentStatus
     created_at: datetime
-

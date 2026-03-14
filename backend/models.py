@@ -31,4 +31,3 @@ class Incident(Base):
         nullable=False,
         default=datetime.utcnow,
     )
-
