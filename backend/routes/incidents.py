@@ -25,6 +25,10 @@ STATUS_BADGE_CLASSES = {
 @router.get("/", response_class=HTMLResponse)
 def index(request: Request, db: Session = Depends(get_db)):
     incidents = crud.get_incidents(db)
+    total_count = len(incidents)
+    active_count = sum(
+        1 for incident in incidents if incident.status in (models.IncidentStatus.NEW, models.IncidentStatus.IN_PROGRESS)
+    )
     return templates.TemplateResponse(
         "index.html",
         {
@@ -32,6 +36,8 @@ def index(request: Request, db: Session = Depends(get_db)):
             "incidents": incidents,
             "status_labels": STATUS_LABELS,
             "status_badge_classes": STATUS_BADGE_CLASSES,
+            "total_count": total_count,
+            "active_count": active_count,
         },
     )
 
